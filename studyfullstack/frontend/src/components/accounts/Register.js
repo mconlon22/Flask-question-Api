@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -13,14 +13,32 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import SignUpPage from './SignUpPage'
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import {register} from '../../actions/auth'
 export class Register extends Component {
+  static propTypes={
+      register:PropTypes.func.isRequired,
+      isAuthenticated:PropTypes.bool
+    }
     state={
 
         username:'',
         email:'',
           password :'',
     }
-   onChange=e=>this.setState({[e.target.id]:[e.target.value]})
+   onChange=e=>this.setState({[e.target.id]:e.target.value})
+   onSubmit=e=>{
+     e.preventDefault();
+    const{username,email,password}=this.state
+    console.log(username,email,password)
+    const newUser={
+       username,
+        email,
+          password ,
+    }
+    this.props.register(newUser)
+   }
 makeStyles=(theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,6 +61,9 @@ makeStyles=(theme) => ({
     render() {
         const {username,email,password}=this.state;
         const classes = this.makeStyles
+        if(this.props.isAuthenticated){
+          return <Redirect to="/"/>
+        }
         return (
     <Container component="main" maxWidth="xs">
                   <br/>
@@ -66,7 +87,7 @@ makeStyles=(theme) => ({
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="username"
                 label="UserName"
                 onChange={this.onChange}
                 autoFocus
@@ -114,6 +135,7 @@ makeStyles=(theme) => ({
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={this.onSubmit}
           >
             Sign Up
           </Button>
@@ -132,6 +154,14 @@ makeStyles=(theme) => ({
   );
         
     }
+
+}
+const mapStateToProps=state=>
+({
+  isAuthenticated:state.auth.isAuthenticated
 }
 
-export default Register
+)
+
+
+export default connect(mapStateToProps,{register})(Register)

@@ -8,3 +8,4 @@ class Question(models.Model):
     marking_scheme = models.ImageField(upload_to='images/marking')
     subject = models.CharField(max_length=50)
     topic = models.CharField(max_length=100)
+    outOf=models.CharField(max_length=4,null=True)

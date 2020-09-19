@@ -3,7 +3,7 @@ import TopicFinder from "./Questions/Searcher/TopicFinder.js";
 import Searcher from "./PastPaper/Searcher/Searcher.js";
 import Register from './accounts/Register'
 import Login from './accounts/Login'
-
+import Questions from './Questions/Questions/Questions'
 
 const Home = () => {
   return (
@@ -48,6 +48,11 @@ const Routes = [
     path: '/Login',
     sidebarName: 'Login',
     component: Login
+  },
+  {
+    path: '/Questions',
+    sidebarName: '',
+    component: Questions
   }
   
 ];

@@ -1,6 +1,13 @@
 import React from "react";
 import { Component } from "react";
 import Searcher from "./Searcher";
+import Container from "react-bootstrap/Container";
+import {connect} from 'react-redux';
+import { NavLink, withRouter ,Redirect} from 'react-router-dom';
+import {getQuestions} from '../../../actions/questions'
+import PropTypes from 'prop-types'
+
+
 class TopicFinder extends Component {
     constructor(props) {
  super (props)
@@ -14,6 +21,9 @@ class TopicFinder extends Component {
       topic: '',
     },
   };
+    }
+    static propTypes={
+      getQuestions:PropTypes.func.isRequired,
     }
   selectCertHandler = (type) => {
     const tempSearch = { ...this.state.search };
@@ -49,9 +59,18 @@ class TopicFinder extends Component {
     tempSearch["level"] = value;
     this.setState({ search: tempSearch });
   };
-
+getQuestionsHandler = () => {
+  this.props.getQuestions(this.state.search )
+    this.props.history.push('/Questions')
+}
   render() {
     return (
+
+      <Container maxwidth="sm">
+      <br/>
+            <br/>
+      <br/>
+  <h1>hi</h1>
       <Searcher
         subject={this.state.search.subject}
         level={this.state.search.level}
@@ -62,9 +81,19 @@ class TopicFinder extends Component {
         topicHandler={this.topicChoiceHandler}
         certHandler={this.selectCertHandler}
         subjectHandler={this.subjectChoiceHandler}
+        getQuestionsHandler={this.getQuestionsHandler}
       />
+            </Container>
+
     );
   }
 }
+const mapStateToProps=state=>
+({
+  isAuthenticated:state.auth.isAuthenticated
+}
 
-export default TopicFinder;
+)
+
+
+export default connect(mapStateToProps,{getQuestions})(withRouter(TopicFinder));

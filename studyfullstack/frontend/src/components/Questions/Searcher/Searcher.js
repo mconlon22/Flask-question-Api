@@ -92,7 +92,7 @@ function checkSubject(subject) {
 
          {props.topic!=''? 
           <div>
-          <Button fullWidth={true} color='default' size='large' variant='contained'>SEARCH</Button>
+          <Button fullWidth={true} color='default' size='large' variant='contained' onClick={props.getQuestionsHandler}>GO</Button>
           </div>:
          <div/>}
          </Grid>

@@ -16,7 +16,6 @@ class Question extends Component {
     }
     return (
       <div>
-        <img src={mainQuestion} alt="" />
         {parts})}
       </div>
     );

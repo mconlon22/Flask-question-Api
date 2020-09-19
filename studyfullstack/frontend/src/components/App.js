@@ -12,9 +12,13 @@ import theme from "./UI/Navbar/Theme.js";
 import Searcher from "./PastPaper/Searcher/Searcher.js";
 import Routes from './Routes';
 import PrivateRoute from './common/PrivateRoute'
-
+import {loadUser} from '../actions/auth'
 // <SimpleTabs /><Searcher/>
 class App extends Component {
+  componentDidMount()
+  {
+    store.dispatch(loadUser())
+  }
   render() {
     return (
       <Provider store={store}>

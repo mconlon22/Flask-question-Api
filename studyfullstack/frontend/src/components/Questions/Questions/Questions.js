@@ -27,7 +27,7 @@ import TopicFinder from '../Searcher/TopicFinder'
     return (
 
       <React.Fragment>
-      <TopicFinder/>
+    
       <CssBaseline />
       <Container maxWidth="sm">
           

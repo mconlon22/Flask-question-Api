@@ -4,6 +4,9 @@ import { NavLink, withRouter } from 'react-router-dom';
 import Routes from '../../Routes';
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import {logout} from '../../../actions/auth'
 import {
   AppBar,
   Toolbar,
@@ -42,8 +45,30 @@ const useStyles = makeStyles((theme) =>
 );
 
 const NavigationBar =(props) => {
+  NavigationBar.propTypes={
+    auth:PropTypes.object.isRequired,
+    logout:PropTypes.func.isRequired
+
+  }
+  const{isAuthenticated,user}=props.auth
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
+  const authLinks=(
+               <ul>
+               <li>
+               <button onClick={props.logout} className="nav-link btn btn-info btn-sm">LogOut</button>
+               </li>
+               </ul>
+
+
+  );
+  const guestLinks=(
+    <div>
+ <NavLink to="/Login"  className={classes.NavLink} >Login</NavLink>
+ <NavLink to="/Register"  className={classes.NavLink}>Register</NavLink>
+</div>
+  );
+  
   const toggleDrawer = (open) => (
   ) => {
     
@@ -63,9 +88,7 @@ const NavigationBar =(props) => {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
-             <NavLink to="/Login"  className={classes.NavLink} >Login</NavLink>
-            
-                          <NavLink to="/Register"  className={classes.NavLink}>Register</NavLink>
+             {isAuthenticated? authLinks:guestLinks}
 
            
 
@@ -81,12 +104,15 @@ const NavigationBar =(props) => {
         >
           <MenuList>
             {Routes.map((prop, key) => {
+
               return (
+              prop.sidebarName!=""?
                 <NavLink to={prop.path} style={{ textDecoration: 'none' }} key={key}>
                   <MenuItem selected={activeRoute(prop.path)}>
                     <ListItemText primary={prop.sidebarName} />
                   </MenuItem>
-                </NavLink>
+                </NavLink>:null
+                
               );
             })}
           </MenuList>
@@ -95,5 +121,9 @@ const NavigationBar =(props) => {
     </div>
   );
 };
+const mapStateToProps=state=>({
+  auth:state.auth
 
-export default withRouter(NavigationBar);
+})
+
+export default connect(mapStateToProps, { logout }) (withRouter(NavigationBar));

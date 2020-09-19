@@ -28,6 +28,7 @@
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
     "css-loader": "^4.3.0",
+    "file-loader": "^6.1.0",
     "material-ui": "^0.20.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -43,6 +44,7 @@
     "redux-thunk": "^2.3.0",
     "save": "^2.4.0",
     "style-loader": "^1.2.1",
-    "transform-class-properties": "^1.0.0-beta"
+    "transform-class-properties": "^1.0.0-beta",
+    "url-loader": "^4.1.0"
   }
 }

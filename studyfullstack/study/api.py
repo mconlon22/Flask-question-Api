@@ -8,5 +8,3 @@ class QuestionViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class=QuestionSerializer
-
-    

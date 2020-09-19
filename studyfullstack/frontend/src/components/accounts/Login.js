@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -13,13 +13,24 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import SignUpPage from './SignUpPage'
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import {login} from '../../actions/auth'
 export class Login extends Component {
     state={
 
         username:'',
           password :'',
     }
-   onChange=e=>this.setState({[e.target.id]:[e.target.value]})
+    static propTypes={
+      login:PropTypes.func.isRequired,
+      isAuthenticated:PropTypes.bool
+    }
+   onChange=e=>this.setState({[e.target.id]:e.target.value})
+   onSubmit=e=>{
+     e.preventDefault();
+     this.props.login(this.state.username,this.state.password);
+   }
 makeStyles=(theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -42,6 +53,9 @@ makeStyles=(theme) => ({
     render() {
         const {username,password}=this.state;
         const classes = this.makeStyles
+        if(this.props.isAuthenticated){
+          return <Redirect to="/"/>
+        }
         return (
     <Container component="main" maxWidth="xs">
     <br/>
@@ -97,6 +111,7 @@ makeStyles=(theme) => ({
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={this.onSubmit}
           >
             Sign In
           </Button>
@@ -116,5 +131,12 @@ makeStyles=(theme) => ({
         
     }
 }
+const mapStateToProps=state=>
+({
+  isAuthenticated:state.auth.isAuthenticated
+}
 
-export default Login
+)
+
+
+export default connect(mapStateToProps,{login})(Login)
