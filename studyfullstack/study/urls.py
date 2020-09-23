@@ -1,9 +1,10 @@
-from rest_framework import routers
-from .api import QuestionViewSet
-from django.contrib import admin
+  
+from django.urls import path
+from .api import QuestionViewSet,CreateQuestionsAPI
+urlpatterns=[
 
+path('api/<topic>/', QuestionViewSet.get),
+path('api/create/', CreateQuestionsAPI.as_view())
 
+]
 
-router = routers.DefaultRouter()
-router.register('api/questions', QuestionViewSet, 'Questions')
-urlpatterns = router.urls

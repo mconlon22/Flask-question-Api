@@ -1,10 +1,30 @@
-from study.models import Question
-from rest_framework import viewsets, permissions 
-from .serializers import QuestionSerializer
+from django.http import JsonResponse
 
-class QuestionViewSet(viewsets.ModelViewSet):
-    queryset=Question.objects.all()
-    permission_classes=[
-        permissions.AllowAny
-    ]
-    serializer_class=QuestionSerializer
+import json
+from .models import Question
+from rest_framework import viewsets
+from rest_framework.response import Response
+
+from .serializers import QuestionSerializer
+from rest_framework import generics, permissions
+from rest_framework.views import APIView
+
+
+
+class QuestionViewSet(APIView):
+
+    def get(self, *args, **kwargs):
+        queryset = Question.objects.all().filter(topic=kwargs.get('topic'))
+        print(queryset)
+        serializer = QuestionSerializer(queryset, many=True)
+        print(json.dumps(serializer.data))
+        return JsonResponse(serializer.data,safe=False)
+class CreateQuestionsAPI(APIView):
+    def post(self,request,*args, **kwargs):
+            serializer = QuestionSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            Question=serializer.save()
+            return Response({
+                
+        })
+    

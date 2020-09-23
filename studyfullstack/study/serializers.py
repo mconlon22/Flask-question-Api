@@ -1,8 +1,16 @@
 from rest_framework import serializers
-from study.models import Question
+from .models import Question
 
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = (
+            'year', 
+            'question_num',
+            'question',
+            'marking_scheme',
+            'subject',
+            'topic',
+            'outOf'
+        )
